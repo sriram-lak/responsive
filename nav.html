@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animated Navbars</title>
+    <link rel="stylesheet" href="scss/main.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <!-- Style 1: Gradient Underline -->
+    <nav class="navbar-gradient">
+      <div class="logo">Brand</div>
+      <input class="search" id="search" type="text" placeholder="Search..." />
+      <ul class="nav-links">
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Services</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </nav>
+  </body>
+</html>
+@import "mixins";
+
+/* Base Styles */
+body {
+  font-family: "Poppins", sans-serif;
+  margin: 0;
+  background: #f8f9fa;
+  color: #333;
+  line-height: 1.6;
+}
+
+main {
+  padding: 2rem;
+}
+
+/* Navbar Styles */
+.navbar-gradient {
+  @include gradient-underline-nav();
+}
+
+// Variables
+$primary: #6c5ce7;
+$secondary: #00cec9;
+$dark: #1a1a2e;
+$light: #f1f1f1;
+$neon-blue: #00f3ff;
+$neon-pink: #ff00aa;
+// search style
+@mixin search-input-style(
+  $text-color: $light,
+  $bg-color: rgba(255, 255, 255, 0.1),
+  $border-color: $primary,
+  $focus-glow: $neon-blue
+) {
+  padding: 0.5rem 1rem;
+  border: 2px solid $border-color;
+  border-radius: 8px;
+  background: $bg-color;
+  color: $text-color;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(5px);
+
+  &::placeholder {
+    color: lighten($text-color, 20%);
+    font-style: italic;
+  }
+
+  &:focus {
+    border-color: $focus-glow;
+    box-shadow: 0 0 10px $focus-glow;
+    background: rgba(255, 255, 255, 0.15);
+  }
+}
+
+// Gradient Underline Navbar
+@mixin gradient-underline-nav(
+  $bg: rgba(26, 26, 46, 0.9),
+  $blur: 10px,
+  $underline-height: 3px
+) {
+  background: $bg;
+  backdrop-filter: blur($blur);
+  padding: 1.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  .logo {
+    font-size: 1.5rem;
+    font-weight: 1000;
+    background: linear-gradient(45deg, $primary, $secondary);
+    background-clip: text;
+    color: transparent;
+  }
+  .search {
+    @include search-input-style();
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+
+    a {
+      color: $light;
+      text-decoration: none;
+      position: relative;
+      padding: 0.5rem 0;
+      font-weight: 500;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: $underline-height;
+        background: linear-gradient(90deg, $primary, $secondary);
+        transition: width 0.9s ease;
+      }
+
+      &:hover::after {
+        width: 100%;
+      }
+      &:active {
+        border-radius: 0.5rem;
+        background: linear-gradient(90deg, $primary, $secondary);
+        opacity: 0.8;
+        transform: scale(0.7);
+      }
+    }
+  }
+}
+
